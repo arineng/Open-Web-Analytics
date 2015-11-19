@@ -398,33 +398,16 @@ class owa_trackingEventHelpers {
 		array_push($filters, owa_coreAPI::getSetting('base', 'ns').owa_coreAPI::getSetting('base', 'feed_subscription_param'));
 		
 		//print_r($filters);
-		
+
+		// remove jsessionid
+		$url = preg_replace('#;jsessionid=[^?]*(?=\?|$)#i', '', $url);
+		// remove matches to URL parameter filter (supporting regular expressions)
 		foreach ($filters as $filter => $value) {
-			
-		  $url = preg_replace(
-			'#\?' .
-			$value .
-			'=.*$|&' .
-			$value .
-			'=.*$|' .
-			$value .
-			'=.*&#msiU',
-			'',
-			$url
-		  );
-		  
+			$pattern = '#&' . $value . '(=[^&]*)?(?=&|$)|(?<=\?)' . $value . '(=[^&]*)?(&|$)#i';
+			$url = preg_replace($pattern, '', $url);
 		}
-	        
-	        
-	    //check for dangling '?'. this might occure if all params are stripped.
-	        
-	    // returns last character of string
-		$test = substr($url, -1);   		
-		
-		// if dangling '?' is found clean up the url by removing it.
-		if ($test == '?') {
-			$url = substr($url, 0, -1);
-		}
+		// remove dangling '?'
+		$url = rtrim($url, '?');
 		
 		//check and remove default page
 		$default_page = $site->getSiteSetting( 'default_page' );
