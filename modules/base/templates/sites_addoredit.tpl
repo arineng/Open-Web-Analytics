@@ -80,8 +80,16 @@
 			<div class="description">This setting controls the URL parameters that OWA should ignore when processing requests. This is useful for avoiding duplicate URLs due to the use of tracking or others state parameters in your URLs. Parameter names should be separated by comma.</div>
 			<div class="field"><input type="text" size="50" name="<?php echo $this->getNs();?>config[query_string_filters]" value="<?php $this->out( @$config['query_string_filters'] );?>"></div>
 		</div>
-		
-		<div class="setting" id="default_page">	
+
+		<div class="setting" id="rewrite_rules">
+			<div class="title">Rewrite Rules</div>
+			<div class="description">This setting controls how to rewrite URLs. Each rule should be in its own line, and its format should be like: (/view)(/[^/]+) -> $1</div>
+			<div class="field">
+				<textarea name="<?php echo $this->getNs();?>config[rewrite_rules]" cols="62" rows="10"><?php $this->out( @$config['rewrite_rules'] );?></textarea>
+			</div>
+		</div>
+
+		<div class="setting" id="default_page">
 			<div class="title">Default Page</div>
 			<div class="description">This is the page that your web server defaults to when there is no page specified in your URL (e.g. index.html). Use this setting to combine page views for www.domain.com and www.domain.com/index.html.</div>
 			<div class="field"><input type="text" size="50" name="<?php echo $this->getNs();?>config[default_page]" value="<?php $this->out( @$config['default_page'] );?>"></div>

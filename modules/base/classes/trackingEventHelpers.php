@@ -400,10 +400,10 @@ class owa_trackingEventHelpers {
 		//print_r($filters);
 
 		// remove jsessionid
-		$url = preg_replace('#;jsessionid=[^?]*(?=\?|$)#i', '', $url);
+		$url = preg_replace('`;jsessionid=[^?]*(?=\?|$)`i', '', $url);
 		// remove matches to URL parameter filter (supporting regular expressions)
 		foreach ($filters as $filter => $value) {
-			$pattern = '#&' . $value . '(=[^&]*)?(?=&|$)|(?<=\?)' . $value . '(=[^&]*)?(&|$)#i';
+			$pattern = '`&' . $value . '(=[^&]*)?(?=&|$)|(?<=\?)' . $value . '(=[^&]*)?(&|$)`i';
 			$url = preg_replace($pattern, '', $url);
 		}
 		// remove dangling '?'
@@ -431,7 +431,21 @@ class owa_trackingEventHelpers {
 			
 			$url = substr($url, 0, -1);
 		}
-		
+
+		$rewrite_rules_string = $site->getSiteSetting( 'rewrite_rules' );
+		if ( $rewrite_rules_string ) {
+			$rewrite_rules_string = trim($rewrite_rules_string);
+			if ( !empty($rewrite_rules_string) ) {
+				$rewrite_rule_lines = preg_split("/\r\n|\n|\r/", $rewrite_rules_string);
+				foreach ($rewrite_rule_lines as $rewrite_rule_line) {
+					$rewrite_rule = explode('->', $rewrite_rule_line, 2);
+					if (count($rewrite_rule) === 2) {
+						$url = preg_replace('`' . trim($rewrite_rule[0]) . '`i', trim($rewrite_rule[1]), $url);
+					}
+				}
+			}
+		}
+
 		// check for domain aliases
 		$das = $site->getSiteSetting( 'domain_aliases' );
 		
