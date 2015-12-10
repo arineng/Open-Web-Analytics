@@ -436,7 +436,7 @@ class owa_trackingEventHelpers {
 		if ( $rewrite_rules_string ) {
 			$rewrite_rules_string = trim($rewrite_rules_string);
 			if ( !empty($rewrite_rules_string) ) {
-				$rewrite_rule_lines = preg_split("/\r\n|\n|\r/", $rewrite_rules_string);
+				$rewrite_rule_lines = explode(',', $rewrite_rules_string);
 				foreach ($rewrite_rule_lines as $rewrite_rule_line) {
 					$rewrite_rule = explode('->', $rewrite_rule_line, 2);
 					if (count($rewrite_rule) === 2) {

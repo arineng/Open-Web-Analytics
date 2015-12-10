@@ -83,7 +83,7 @@
 
 		<div class="setting" id="rewrite_rules">
 			<div class="title">Rewrite Rules</div>
-			<div class="description">This setting controls how to rewrite URLs. Each rule should be in its own line, and its format should be like: (/view)(/[^/]+) -> $1</div>
+			<div class="description">This setting controls how to rewrite URLs. Rules should be separated by comma. Each rule looks like: (/view)(/[^/]+) -> $1</div>
 			<div class="field">
 				<textarea name="<?php echo $this->getNs();?>config[rewrite_rules]" cols="62" rows="10"><?php $this->out( @$config['rewrite_rules'] );?></textarea>
 			</div>
