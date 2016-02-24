@@ -668,13 +668,13 @@ class owa_trackingEventHelpers {
 		
 			if ( $event->get( 'HTTP_REFERER' ) ) {
 				// @todo is this parse done somewhere else already? source?	
-				$referer_parse = owa_lib::parse_url( $event->get('HTTP_REFERER') );
-				
-				$http_host = $event->get( 'HTTP_HOST' );
-	
-				if ( isset($referer_parse['host'] ) && $referer_parse['host'] === $http_host ) {
-					
-					return $event->get('HTTP_REFERER');	
+				$referer_parse = parse_url( $event->get('HTTP_REFERER') );
+
+				if ( isset($referer_parse['host'] ) ) {
+					$curr_page = parse_url( $event->get('page_url') );
+					if ( $referer_parse['host'] === $curr_page['host'] ) {
+						return $event->get( 'HTTP_REFERER' );
+					}
 				}
 			}
 		}
