@@ -311,7 +311,20 @@ class owa_sanitize {
 	
 	public static function cleanUrl( $url ) {
 		
-		return;
+		$url = owa_sanitize::cleanInput($url, 
+			array(
+				'hidden_spaces' => true,
+				'remove_html' 	=> true,
+				'encode' 		=> false,
+				'dollar' 		=> true,
+				'carriage'		=> true,
+				'unicode' 		=> true,
+				'escape_html' 	=> true,
+				'backslash' 	=> false
+			)
+		);
+		
+		return str_replace('&amp;', '&', $url);
 	}
 	
 	public static function cleanUserId ( $user_id ) {
